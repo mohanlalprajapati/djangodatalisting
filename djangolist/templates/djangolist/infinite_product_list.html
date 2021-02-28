@@ -1,0 +1,43 @@
+{%extends 'djangolist/base.html'}
+{% load customtags %}
+{% load crispy_forms_tags %}
+{%block title%}Infinite Scorlling Example{%endblock%}
+{%block content %}
+<h5>Proudcts</h5>
+<div class="infinite-container">
+    {% for product in products %}
+      <div class="infinite-item">
+        <h3>{{ product.name }}</h3>
+        <p>
+          <small>{{ product.category }}</small>
+        </p>
+        <p>{{ product.quantity }}</p>
+      </div>
+    {% endfor %}
+  </div>
+  {% if page_obj.has_next %}
+    <a class="infinite-more-link" href="?page={{ products.next_page_number }}">More</a>
+  {% endif %}
+  <div class="loading" style="display: none;">
+    Loading...
+  </div>
+
+{%endblock%}
+
+{%block otherscripts%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.min.js"
+    integrity="sha512-CEiA+78TpP9KAIPzqBvxUv8hy41jyI3f2uHi7DGp/Y/Ka973qgSdybNegWFciqh6GrN2UePx2KkflnQUbUhNIA=="
+    crossorigin="anonymous"></script>
+<script src="{% static 'djagolist/javascripts/infinite.min.js' %}"></script>
+<script>
+    var infinite = new Waypoint.Infinite({
+      element: $('.infinite-container')[0],
+      onBeforePageLoad: function () {
+        $('.loading').show();
+      },
+      onAfterPageLoad: function ($items) {
+        $('.loading').hide();
+      }
+    });
+  </script>
+{%endblock%}

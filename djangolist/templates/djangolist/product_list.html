@@ -1,61 +1,74 @@
-
 {%extends "djangolist/base.html"%}
 {% load customtags %}
 {% load crispy_forms_tags %}
+{%block title%}Django Listing with Filtering{%endblock%}
 {%block content%}
-
-    
-<form method="get">
-  
-    {% crispy filterset.form %}
+<div class="card">
+  <div class="card-header">
+      <h5>Products</h5>
+  </div>
+  <div class="card-body">
     <div class="row">
       <div class="col">
-        <input class="btn btn-primary" type="submit" />
+        <h5>Search Criteria:</h5>
+        <form method="get">
+          {{ filterset.form|crispy }}
+          <div class="row mt-2">
+            <div class="col">
+              <input class="btn btn-primary" type="submit" />
+            </div>
+          </div>
+        </form>
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <h5>Product List</h5>
+        <table class="table table-bordered border-primary table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in object_list%}
+            <tr>
     
-</form>
-<table class="table table-bordered border-primary table-striped table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Category</th>
-      <th scope="col">Quantity</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for obj in object_list%}
-    <tr>
-      
-      <td>{{obj.name}}</td>
-      <td>{{obj.category}}</td>
-      <td>{{obj.quantity}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+              <td>{{obj.name}}</td>
+              <td>{{obj.category}}</td>
+              <td>{{obj.quantity}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if is_paginated %}
+        <nav aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item {%if page_obj.number == 1 %} disabled {%endif%}">
+              <a class="page-link" href="?{% param_replace page=1 %}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            {% for i in paginator.num_pages|times%}
+            <li class="page-item {%if i|add:'1' == page_obj.number %} active {%endif%}"><a class="page-link"
+                href="?{% param_replace page=i|add:'1' %}">{{i|add:"1"}}</a></li>
+            {%endfor%}
+    
+    
+            <li class="page-item {%if page_obj.number == paginator.num_pages %} disabled {%endif%}">
+              <a class="page-link" href="?{% param_replace page=paginator.num_pages %}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
 
-    
 
-{% if is_paginated %}
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item {%if page_obj.number == 1 %} disabled {%endif%}">
-      <a class="page-link" href="?{% param_replace page=1 %}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {% for i in paginator.num_pages|times%}
-    <li class="page-item {%if i|add:'1' == page_obj.number %} active {%endif%}"><a class="page-link" href="?{% param_replace page=i|add:'1' %}">{{i|add:"1"}}</a></li>
-    {%endfor%}
-    
-    
-    <li class="page-item {%if page_obj.number == paginator.num_pages %} disabled {%endif%}">
-      <a class="page-link" href="?{% param_replace page=paginator.num_pages %}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
-{% endif %}
 {%endblock%}

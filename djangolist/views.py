@@ -27,5 +27,11 @@ class ProductListView(FilteredListView):
     tempalte_name = "djangolist/product_list.html"
     model = Product
     filterset_class = ProductFilter
-    #context_object_name = 'products'
+    paginate_by = 10
+
+
+class ProductListInfiniteView(ListView):
+    tempalte_name = "djangolist/infinite_product_list.html"
+    model = Product
     paginate_by = 3
+    context_object_name = "products"

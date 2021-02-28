@@ -12,5 +12,5 @@ class ProductFilter(django_filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = {'name':['icontains'], 'quantity':['range'], 'category':['exact']}
+        fields = {'name':['icontains'],'category':['exact']}
        
