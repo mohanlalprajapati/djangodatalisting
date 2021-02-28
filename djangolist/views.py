@@ -30,8 +30,9 @@ class ProductListView(FilteredListView):
     paginate_by = 10
 
 
-class ProductListInfiniteView(ListView):
+class ProductListInfiniteView(FilteredListView):
     template_name = "djangolist/infinite_product_list.html"
     model = Product
     paginate_by = 3
     context_object_name = "products"
+    filterset_class = ProductFilter

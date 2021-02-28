@@ -5,6 +5,19 @@
 {%block title%}Infinite Scorlling Example{%endblock%}
 {%block content %}
 <h5>Proudcts</h5>
+<div class="row">
+  <div class="col">
+    <h5>Search Criteria:</h5>
+    <form method="get">
+      {{ filterset.form|crispy }}
+      <div class="row mt-2">
+        <div class="col">
+          <input class="btn btn-primary" type="submit" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 <table class="table table-bordered border-primary table-striped table-hover infinite-container">
   <thead>
     <tr>
